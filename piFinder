@@ -1,0 +1,23 @@
+#!/bin/sh
+ARG2=${2:-30}
+#PID=$(cat /home/pi/start_sh.pid)
+#echo $PID
+case "$1" in
+        start)
+		kill $(cat /home/pi/start_sh.pid) || echo "Process is running."
+		#Save the pid of this sciprt into the start_sh file at /home/pi
+		echo $$ > /home/pi/start_sh.pid
+		end=...
+		while true
+		do
+		sudo python /home/pi/geolocation.py
+		sleep $ARG2
+		done
+            ;;
+        stop)
+            kill $(cat /home/pi/start_sh.pid) || echo "Process is not running."
+            ;;
+        *)
+            echo "Wrong syntax.\nTo start:  piFinder start [duration]\nTo stop: piFinder stop"
+            exit 1
+esac
